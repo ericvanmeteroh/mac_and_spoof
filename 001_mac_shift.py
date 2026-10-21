@@ -1,9 +1,37 @@
+# !/usr/bin/env python3
 import subprocess
 import time
 import random
 import optparse
+import warnings
 
-def change_mac(interface, new_mac):
+# Suppressing warnings from the requests library
+warnings.filterwarnings("ignore", category=UserWarning, module='requests')
+from requests import options
+
+# Configuration
+def get_arguments():
+    parser = optparse.OptionParser()
+    parser.add_option("-i", "--interface", dest="network_interface", help="Enter the network interface (e.g., eth0, wlan0)")
+    parser.add_option("-m", "--mac", dest="mac_address", help="Enter the desired MAC address")
+
+    (options, args) = parser.parse_args()
+
+    if not options.network_interface:
+        options.network_interface = input("Enter the network interface (e.g., eth0, wlan0): ")
+    else:
+        options.network_interface = options.network_interface
+
+    if not options.mac_address:
+        numbers_list = [random.randint(0, 25) for _ in range(5)]
+        clean_hex = [hex(num)[2:].upper().zfill(2) for num in numbers_list]
+        options.mac_address = "06:" + (":".join(clean_hex))
+    else:
+        options.mac_address = options.mac_address
+    return options, args
+
+# Function to change the MAC address of a network interface
+def change_mac(network_interface, mac_address):
     # MU/TH/UR 6000 CRT Color Palette
     GREEN = "\033[38;5;46m"    # Phosphor Terminal Green
     AMBER = "\033[38;5;214m"   # Nostromo Warning Amber
@@ -31,23 +59,6 @@ def change_mac(interface, new_mac):
     subprocess.call(["ifconfig", network_interface, "hw", "ether", mac_address])
     subprocess.call(["ifconfig", network_interface, "up"])
 
-# Configuration
-parser = optparse.OptionParser()
-parser.add_option("-i", "--interface", dest="network_interface", help="Enter the network interface (e.g., eth0, wlan0)")
-parser.add_option("-m", "--mac", dest="mac_address", help="Enter the desired MAC address")
-
-(options, args) = parser.parse_args()
-
-if not options.network_interface:
-    network_interface = input("Enter the network interface (e.g., eth0, wlan0): ")
-else:
-    network_interface = options.network_interface
-
-if not options.mac_address:
-    numbers_list = [random.randint(0, 25) for _ in range(5)]
-    clean_hex = [hex(num)[2:].upper().zfill(2) for num in numbers_list]
-    mac_address = "06:" + (":".join(clean_hex))
-else:
-    mac_address = options.mac_address
-
-change_mac(network_interface, mac_address)
+# Main execution
+(options, args) = get_arguments()
+change_mac(options.network_interface, options.mac_address)
