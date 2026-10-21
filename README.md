@@ -7,15 +7,14 @@
 
 ## [01] INITIAL LOG // SPECIMEN INTAKE
 **Symptom / Inquiry:**  
-Decive MAC address identified by built in utility (`ifconfig`) and return is validated. Device address listed under (`wlo1`) interface. Will validate by cracking the chassis. To navigate checkpoints a phantom is required to provide stealth switches. 
+Decive MAC address identified by built in utility (`ifconfig`) and return is validated. Device address listed under (`wlo1`) interface. Will validate by cracking the chassis. To navigate checkpoints a phantom is required to provide stealth switches. Targeting (`wlo1`) which identifies wireless network, ```ifconfig wlo1 down```, disable interface to allow modifications. Next, designating a new sequence manually, ```ifconfig wlo1 hw ether 00:11:22:33:44:55```. MAC addresses contain 12 character in sequence followed by colons, xx:xx:xx:xx:xx:xx. To establish connection of (`wlo1`) finish with ```ifconfig wlo1 up```. Important to note, wlo applies to wireless networks, utilize eth if hardwired to system. Verify system integrity by running ifconfig.
 
-<!-- ## [02] SYNAPTIC WIRING // CORE ARCHITECTURE
+## [02] SYNAPTIC WIRING // CORE ARCHITECTURE
 * **Substrate:** Arch Linux (Omarchy) / Python 3.12
 * **Internals Probed:** 
-  * `CPU_THERMAL`: Reads physical package temp via `psutil` & `/sys/class/thermal`
-  * `DIMM_SLOTS`: Audits 288-pin DIMM / SO-DIMM population and clock speeds
-  * `STORAGE_ARRAY`: Inspects NVMe PCIe vs. SATA III mount points and S.M.A.R.T. health
+  * `SUBPROCESS`: Process allow execution of system commands withing defined script. 
 
+<!-- 
 ## [03] FIELD CHRONICLE // COMMIT TRANSMISSION LOG
 * `[BOOT]` — Specimen intake complete. Base script initialized on workbench.
 * `[SPLICE]` — 
